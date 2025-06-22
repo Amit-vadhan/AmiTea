@@ -7,17 +7,47 @@ const { promisify } = require("util");
 
 const postSchema = new Schema(
   {
-    content: {type: String, trim: true, },
-    fileUrl: {type: String, trim: true, }, fileType: {type: String, },
-    community: {type: Schema.Types.ObjectId, ref: "Community", required: true, },
-    user: {type: Schema.Types.ObjectId, ref: "User", required: true, },
-    comments: [{type: Schema.Types.ObjectId, ref: "Comment", }, ],
-    likes: [{type: Schema.Types.ObjectId, ref: "User", }, ],
-  }, {timestamps: true, }
+    content: {
+      type: String,
+      trim: true,
+    },
+    fileUrl: {
+      type: String,
+      trim: true,
+    },
+    fileType: {
+      type: String,
+    },
+    community: {
+      type: Schema.Types.ObjectId,
+      ref: "Community",
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
 );
 
 postSchema.index({ content: "text" });
-  
+
 postSchema.pre("remove", async function (next) {
   try {
     if (this.fileUrl) {
